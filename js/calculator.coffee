@@ -127,7 +127,7 @@ jQuery ->
   isKeyCode = (val) ->
     (evt) -> evt.keyCode == val
 
-  # Returns true if no special key other than shift were pressed.
+  # Returns true if no special key other than shift was pressed.
   noSpecialKeys = (evt) ->
     !(evt.altKey || evt.ctrlKey || evt.metaKey)
 
