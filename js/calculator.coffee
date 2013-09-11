@@ -126,10 +126,15 @@ jQuery ->
   isKeyCode = (val) ->
     (evt) -> evt.keyCode == val
 
+  # Returns true if no special key other than shift were pressed.
+  noSpecialKeys = (evt) ->
+    !(evt.altKey || evt.ctrlKey || evt.metaKey)
+
   # Generate streams of DOM events (button clicks and key presses).
   # Ensure that backspace doesn't navigate away by calling `preventDefault`.
+  # We also filter out any key presses that include the control, alt, or meta keys.
   buttonClicks = $('button').asEventStream('click')
-  keyPresses = $(document).asEventStream('keydown')
+  keyPresses = $(document).asEventStream('keydown').filter(noSpecialKeys)
   keyPresses.filter(isKeyCode(8)).onValue('.preventDefault')
 
   # Now we can use the DOM events with the `actionFromButtonClick` and
