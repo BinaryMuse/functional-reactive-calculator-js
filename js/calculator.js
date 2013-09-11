@@ -27,7 +27,7 @@ Calculator = (function() {
       return new Calculator();
     }
     try {
-      val = "" + (eval(this.toString()));
+      val = math["eval"](this.toString());
       return new Calculator(val, true);
     } catch (_error) {
       return new Calculator('', false, true);
