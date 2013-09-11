@@ -169,16 +169,15 @@ functions for making the program work.</p>
               </div>
               <p>Create an action object from a DOM element&#39;s <code>data</code> attributes:</p>
 <ul>
-<li><code>data-cmd</code> indicates that the button triggers a special command</li>
+<li><code>data-cmd</code> indicates that the element triggers a special command,
+and also indicates the actual command the element triggers</li>
 <li><code>data-operator</code> indicates that the value is an operator</li>
 <li><code>data-code</code> is a key code string, which is parsed by <code>parseCodeString</code></li>
-<li><code>data-value</code> is present for commands and indicates the command the button
-triggers</li>
 </ul>
 <p>An action consists of four properties:</p>
 <ul>
 <li><code>type</code>: either &#39;command&#39; or &#39;value&#39;, depending on if the action triggers
-a special command</li>
+a special command or just represents a normal button on the calculator</li>
 <li><code>operator</code>: <code>true</code> if the value is one of the mathematical operators</li>
 <li><code>value</code>: either the value of the action or name of the command to trigger</li>
 <li><code>keys</code>: an array of key code objects that describe which keyboard
