@@ -19,14 +19,14 @@ class Calculator
     else
       new Calculator(@toString() + val, false)
 
-  # We simply use `eval` to get the result of the current expression,
-  # and indicate that the new value is an answer so that it will
-  # be automatically replaced with any new value the user types.
+  # We use [math.js](http://mathjs.org/) to evaluate the current expression,
+  # and indicate that the new value is an answer so that it will be
+  # automatically replaced with any new value the user types.
   eval: =>
     return new Calculator() if @value == ''
 
     try
-      val = "#{eval(@toString())}"
+      val = math.eval(@toString())
       new Calculator(val, true)
     catch
       new Calculator('', false, true)

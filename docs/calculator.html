@@ -71,9 +71,9 @@ an operator).</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>We simply use <code>eval</code> to get the result of the current expression,
-and indicate that the new value is an answer so that it will
-be automatically replaced with any new value the user types.</p>
+              <p>We use <a href="http://mathjs.org/">math.js</a> to evaluate the current expression,
+and indicate that the new value is an answer so that it will be
+automatically replaced with any new value the user types.</p>
 
             </div>
             
@@ -81,7 +81,7 @@ be automatically replaced with any new value the user types.</p>
     <span class="keyword">return</span> <span class="keyword">new</span> Calculator() <span class="keyword">if</span> <span class="property">@value</span> == <span class="string">''</span>
 
     <span class="keyword">try</span>
-      val = <span class="string">"<span class="subst">#{eval(@toString())}</span>"</span>
+      val = math.eval(<span class="property">@toString</span>())
       <span class="keyword">new</span> Calculator(val, <span class="literal">true</span>)
     <span class="keyword">catch</span>
       <span class="keyword">new</span> Calculator(<span class="string">''</span>, <span class="literal">false</span>, <span class="literal">true</span>)
