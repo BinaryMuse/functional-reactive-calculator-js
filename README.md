@@ -5,6 +5,11 @@ This project is an experiment in functional reactive programming using [the Baco
 
 The primary files for inspection are `index.ejs` and `js/calculator.coffee`.
 
+Demo
+----
+
+The app is running at http://binarymuse.github.io/functional-reactive-calculator-js/
+
 Starting the App
 ----------------
 
