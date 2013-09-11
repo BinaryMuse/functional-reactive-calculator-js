@@ -5,4 +5,4 @@ h1{text-align:center;padding-bottom:15px;}
 .button-row{clear:both;}
 button{display:block;float:left;height:50px;width:50px;text-align:center;margin:5px;font-size:15px;border:1px solid black;background-color:#eee;}button.num{background-color:#ccc;}
 .clear{clear:both;}
-#docs{width:600px;margin:0 auto;margin-top:30px;font-size:12pt;line-height:18pt;}
+#docs{width:650px;margin:0 auto;margin-top:30px;font-size:12pt;line-height:18pt;}

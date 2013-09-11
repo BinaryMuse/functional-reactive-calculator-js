@@ -73,7 +73,7 @@ Calculator = (function() {
 })();
 
 jQuery(function() {
-  var actionFromButton, actionFromButtonClick, actionFromKeyPress, actionList, actions, buttonActions, buttonClicks, isKeyCode, keyActions, keyPresses, parseCodeString;
+  var actionFromButton, actionFromButtonClick, actionFromKeyPress, actionList, actions, buttonActions, buttonClicks, isKeyCode, keyActions, keyPresses, noSpecialKeys, parseCodeString;
   actionFromButton = function(button) {
     button = $(button);
     return {
@@ -126,8 +126,11 @@ jQuery(function() {
       return evt.keyCode === val;
     };
   };
+  noSpecialKeys = function(evt) {
+    return !(evt.altKey || evt.ctrlKey || evt.metaKey);
+  };
   buttonClicks = $('button').asEventStream('click');
-  keyPresses = $(document).asEventStream('keydown');
+  keyPresses = $(document).asEventStream('keydown').filter(noSpecialKeys);
   keyPresses.filter(isKeyCode(8)).onValue('.preventDefault');
   buttonActions = buttonClicks.map(actionFromButtonClick);
   keyActions = keyPresses.map(actionFromKeyPress(actionList)).filter('.value');
