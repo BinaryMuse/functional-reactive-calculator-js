@@ -78,6 +78,8 @@ be automatically replaced with any new value the user types.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>  eval: =&gt;
+    <span class="keyword">return</span> <span class="keyword">new</span> Calculator() <span class="keyword">if</span> <span class="property">@value</span> == <span class="string">''</span>
+
     <span class="keyword">try</span>
       val = <span class="string">"<span class="subst">#{eval(@toString())}</span>"</span>
       <span class="keyword">new</span> Calculator(val, <span class="literal">true</span>)
