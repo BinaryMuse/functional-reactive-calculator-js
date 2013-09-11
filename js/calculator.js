@@ -23,6 +23,9 @@ Calculator = (function() {
 
   Calculator.prototype["eval"] = function() {
     var val;
+    if (this.value === '') {
+      return new Calculator();
+    }
     try {
       val = "" + (eval(this.toString()));
       return new Calculator(val, true);
