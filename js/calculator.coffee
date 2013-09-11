@@ -69,16 +69,15 @@ class Calculator
 jQuery ->
   # Create an action object from a DOM element's `data` attributes:
   #
-  # * `data-cmd` indicates that the button triggers a special command
+  # * `data-cmd` indicates that the element triggers a special command,
+  #   and also indicates the actual command the element triggers
   # * `data-operator` indicates that the value is an operator
   # * `data-code` is a key code string, which is parsed by `parseCodeString`
-  # * `data-value` is present for commands and indicates the command the button
-  #   triggers
   #
   # An action consists of four properties:
   #
   # * `type`: either 'command' or 'value', depending on if the action triggers
-  #   a special command
+  #   a special command or just represents a normal button on the calculator
   # * `operator`: `true` if the value is one of the mathematical operators
   # * `value`: either the value of the action or name of the command to trigger
   # * `keys`: an array of key code objects that describe which keyboard
