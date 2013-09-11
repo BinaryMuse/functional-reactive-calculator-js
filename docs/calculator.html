@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>calculator.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>calculator.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>We start off with a <code>Calculator</code> class, which represents the state of
+a calculator; Calculators are never mutated; methods on the display
+return a new <code>Calculator</code> instance.</p>
+<p>(I&#39;m cheating a bit here by using a class, but I&#39;m really using it in
+a fairly functional way--consider it like Scala&#39;s case classes or
+Elixir&#39;s records.)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="class"><span class="keyword">class</span> <span class="title">Calculator</span></span>
+  constructor: (<span class="property">@value</span> = <span class="string">''</span>, <span class="property">@isAnswer</span> = <span class="literal">false</span>, <span class="property">@isError</span> = <span class="literal">false</span>) -&gt;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Appending a value to the calculator is straightforward, unless the
+calculator&#39;s value is currently an error (in which case we <em>replace</em>
+the value with the new value) or an answer (in which case we
+replace the value with the new value only if the new value is not
+an operator).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  append: (val, isOperator) =&gt;
+    <span class="keyword">if</span> <span class="property">@isError</span> || (<span class="property">@isAnswer</span> &amp;&amp; !isOperator)
+      <span class="keyword">new</span> Calculator(val, <span class="literal">false</span>)
+    <span class="keyword">else</span>
+      <span class="keyword">new</span> Calculator(<span class="property">@toString</span>() + val, <span class="literal">false</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>We simply use <code>eval</code> to get the result of the current expression,
+and indicate that the new value is an answer so that it will
+be automatically replaced with any new value the user types.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  eval: =&gt;
+    <span class="keyword">try</span>
+      val = <span class="string">"<span class="subst">#{eval(@toString())}</span>"</span>
+      <span class="keyword">new</span> Calculator(val, <span class="literal">true</span>)
+    <span class="keyword">catch</span>
+      <span class="keyword">new</span> Calculator(<span class="string">''</span>, <span class="literal">false</span>, <span class="literal">true</span>)
+
+  clear: =&gt;
+    <span class="keyword">new</span> Calculator()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Backspace can only be used on user-supplied expressions;
+trying to backspace on an answer or error should clear the value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  backspace: =&gt;
+    <span class="keyword">if</span> <span class="property">@isAnswer</span> || <span class="property">@isError</span>
+      <span class="property">@clear</span>()
+    <span class="keyword">else</span>
+      value = <span class="property">@toString</span>()
+      <span class="keyword">new</span> Calculator(value[<span class="number">0.</span>..value.length - <span class="number">1</span>], <span class="literal">false</span>)
+
+  toString: =&gt;
+    <span class="keyword">if</span> <span class="property">@isError</span>
+      <span class="string">'ERROR'</span>
+    <span class="keyword">else</span>
+      <span class="property">@value</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Process the given action against the current value. Note
+that all branches result in returning a new Calculator instance.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  processAction: (action) -&gt;
+    <span class="keyword">if</span> action.type == <span class="string">'value'</span>
+      <span class="property">@append</span>(action.value, action.operator)
+    <span class="keyword">else</span> <span class="keyword">if</span> action.type == <span class="string">'command'</span>
+      <span class="keyword">switch</span> action.value
+        <span class="keyword">when</span> <span class="string">'CLEAR'</span>
+          <span class="property">@clear</span>()
+        <span class="keyword">when</span> <span class="string">'BACKSPACE'</span>
+          <span class="property">@backspace</span>()
+        <span class="keyword">when</span> <span class="string">'EQUAL'</span>
+          <span class="property">@eval</span>()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Here we star the program proper. First, we&#39;ll define a set of helper
+functions for making the program work.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>jQuery -&gt;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Create an action object from a DOM element&#39;s <code>data</code> attributes:</p>
+<ul>
+<li><code>data-cmd</code> indicates that the button triggers a special command</li>
+<li><code>data-operator</code> indicates that the value is an operator</li>
+<li><code>data-code</code> is a key code string, which is parsed by <code>parseCodeString</code></li>
+<li><code>data-value</code> is present for commands and indicates the command the button
+triggers</li>
+</ul>
+<p>An action consists of four properties:</p>
+<ul>
+<li><code>type</code>: either &#39;command&#39; or &#39;value&#39;, depending on if the action triggers
+a special command</li>
+<li><code>operator</code>: <code>true</code> if the value is one of the mathematical operators</li>
+<li><code>value</code>: either the value of the action or name of the command to trigger</li>
+<li><code>keys</code>: an array of key code objects that describe which keyboard
+shortcuts can be used to trigger the action</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="function"><span class="title">actionFromButton</span></span> = (button) -&gt;
+    button = $(button)
+    {
+      type:     <span class="keyword">if</span> button.data(<span class="string">'cmd'</span>) <span class="keyword">then</span> <span class="string">'command'</span> <span class="keyword">else</span> <span class="string">'value'</span>
+      operator: !!button.data(<span class="string">'operator'</span>)
+      value:    button.data(<span class="string">'cmd'</span>) || button.text()
+      keys:     parseCodeString <span class="string">"<span class="subst">#{button.data('code')}</span>"</span>
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Parse a string like &quot;s57|50&quot; into key code objects, where multiple
+codes are separated by a pipe character and &quot;s&quot; represents pressing
+the key with the shift key held down.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="function"><span class="title">parseCodeString</span></span> = (str) -&gt;
+    str.split(<span class="string">'|'</span>).map (str) -&gt;
+      <span class="keyword">if</span> str[<span class="number">0</span>] == <span class="string">'s'</span>
+        { shift: <span class="literal">true</span>, code: str[<span class="number">1.</span>..str.length] }
+      <span class="keyword">else</span>
+        { shift: <span class="literal">false</span>, code: str }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Generate an action from a button&#39;s click event.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="function"><span class="title">actionFromButtonClick</span></span> = (event) -&gt;
+    actionFromButton event.target</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Generate a function that takes a key event and finds an associated
+action in the given list of actions based on the action&#39;s key code
+definitions. The function returns <code>undefined</code> if nothing is found.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="function"><span class="title">actionFromKeyPress</span></span> = (actionList) -&gt;
+    (keyPress) -&gt;
+      code  = <span class="string">"<span class="subst">#{keyPress.keyCode}</span>"</span>
+      shift = keyPress.shiftKey
+
+      <span class="keyword">for</span> action <span class="keyword">in</span> actionList
+        <span class="keyword">for</span> key <span class="keyword">in</span> action.keys
+          <span class="keyword">return</span> action <span class="keyword">if</span> key.code == code &amp;&amp; key.shift == shift</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Create a list of action objects from the current DOM for later searching.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  actionList = $(<span class="string">'button'</span>).map (idx, button) -&gt;
+    actionFromButton(button)
+  .toArray()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Generate a function that takes a key event and returns whether
+or not the event&#39;s key code matches the given value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="function"><span class="title">isKeyCode</span></span> = (val) -&gt;
+    (evt) -&gt; evt.keyCode == val</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Generate streams of DOM events (button clicks and key presses).
+Ensure that backspace doesn&#39;t navigate away by calling <code>preventDefault</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  buttonClicks = $(<span class="string">'button'</span>).asEventStream(<span class="string">'click'</span>)
+  keyPresses = $(document).asEventStream(<span class="string">'keydown'</span>)
+  keyPresses.filter(isKeyCode(<span class="number">8</span>)).onValue(<span class="string">'.preventDefault'</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Now we can use the DOM events with the <code>actionFromButtonClick</code> and
+<code>actionFromKeyPress</code> functions we created above to transform the
+stream of DOM events into a stream of action objects.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  buttonActions = buttonClicks.map(actionFromButtonClick)
+  keyActions = keyPresses.map(actionFromKeyPress(actionList)).filter(<span class="string">'.value'</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>When we can combine the two streams into one stream of <em>all</em> actions.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  actions = buttonActions.merge(keyActions)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>All that&#39;s left is to create a new <code>Calculator</code> object and call
+<code>processAction</code> to generate a new value for each action in the stream.
+For each action, we&#39;ll assign the text value to the appropriate
+DOM element.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  actions.scan(<span class="keyword">new</span> Calculator, <span class="string">'.processAction'</span>).assign $(<span class="string">'#display'</span>), <span class="string">'val'</span></pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
