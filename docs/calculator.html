@@ -78,6 +78,8 @@ be automatically replaced with any new value the user types.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>  eval: =&gt;
+    <span class="keyword">return</span> <span class="keyword">new</span> Calculator() <span class="keyword">if</span> <span class="property">@value</span> == <span class="string">''</span>
+
     <span class="keyword">try</span>
       val = <span class="string">"<span class="subst">#{eval(@toString())}</span>"</span>
       <span class="keyword">new</span> Calculator(val, <span class="literal">true</span>)
@@ -299,14 +301,12 @@ or not the event&#39;s key code matches the given value.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>Generate streams of DOM events (button clicks and key presses).
-Ensure that backspace doesn&#39;t navigate away by calling <code>preventDefault</code>.</p>
+              <p>Returns true if no special key other than shift were pressed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  buttonClicks = $(<span class="string">'button'</span>).asEventStream(<span class="string">'click'</span>)
-  keyPresses = $(document).asEventStream(<span class="string">'keydown'</span>)
-  keyPresses.filter(isKeyCode(<span class="number">8</span>)).onValue(<span class="string">'.preventDefault'</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="function"><span class="title">noSpecialKeys</span></span> = (evt) -&gt;
+    !(evt.altKey || evt.ctrlKey || evt.metaKey)</pre></div></div>
             
         </li>
         
@@ -316,6 +316,25 @@ Ensure that backspace doesn&#39;t navigate away by calling <code>preventDefault<
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Generate streams of DOM events (button clicks and key presses).
+Ensure that backspace doesn&#39;t navigate away by calling <code>preventDefault</code>.
+We also filter out any key presses that include the control, alt, or meta keys.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  buttonClicks = $(<span class="string">'button'</span>).asEventStream(<span class="string">'click'</span>)
+  keyPresses = $(document).asEventStream(<span class="string">'keydown'</span>).filter(noSpecialKeys)
+  keyPresses.filter(isKeyCode(<span class="number">8</span>)).onValue(<span class="string">'.preventDefault'</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Now we can use the DOM events with the <code>actionFromButtonClick</code> and
 <code>actionFromKeyPress</code> functions we created above to transform the
@@ -329,11 +348,11 @@ stream of DOM events into a stream of action objects.</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>When we can combine the two streams into one stream of <em>all</em> actions.</p>
 
@@ -344,11 +363,11 @@ stream of DOM events into a stream of action objects.</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>All that&#39;s left is to create a new <code>Calculator</code> object and call
 <code>processAction</code> to generate a new value for each action in the stream.
