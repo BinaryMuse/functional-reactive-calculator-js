@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <title>FRP Calculator</title>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/bacon.js"></script>
+  <script type="text/javascript" src="js/calculator.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+
+<h1>Functional Reactive Calculator</h1>
+
+<div id='calculator'>
+  <input id='display'>
+  <div class='button-row'>
+    <button data-code='8' data-cmd='BACKSPACE'>&larr;</button>
+    <button data-code='s57'>(</button>
+    <button data-code='s48'>)</button>
+    <button data-code='27' data-cmd='CLEAR'>AC</button>
+  </div>
+  <div class='button-row'>
+    <button data-code='55' class='num'>7</button>
+    <button data-code='56' class='num'>8</button>
+    <button data-code='57' class='num'>9</button>
+    <button data-code='s187' data-operator='true'>+</button>
+  </div>
+  <div class='button-row'>
+    <button data-code='52' class='num'>4</button>
+    <button data-code='53' class='num'>5</button>
+    <button data-code='54' class='num'>6</button>
+    <button data-code='189' data-operator='true'>-</button>
+  </div>
+  <div class='button-row'>
+    <button data-code='49' class='num'>1</button>
+    <button data-code='50' class='num'>2</button>
+    <button data-code='51' class='num'>3</button>
+    <button data-code='s56' data-operator='true'>*</button>
+  </div>
+  <div class='button-row'>
+    <button data-code='190'>.</button>
+    <button data-code='48' class='num'>0</button>
+    <button data-code='187|13' data-cmd="EQUAL">=</button>
+    <button data-code='191' data-operator='true'>/</button>
+  </div>
+  <div class='clear'></div>
+</div>
+
+<div id='docs'>
+  <p>This demo is made using <a href="https://github.com/baconjs/bacon.js">Bacon.js</a>,
+  a functional reactive programming language for JavaScript. Check out the
+  <a href="docs/calculator.html">annotated source code</a> (written in CoffeeScript)
+  for more information.</p>
+</div>
+
+</body>
+</html>

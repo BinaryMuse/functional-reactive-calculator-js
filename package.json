@@ -1,0 +1,19 @@
+{
+  "name": "frp-calculator",
+  "version": "0.0.0",
+  "description": "Functional reactive calculator",
+  "dependencies": {
+    "docco": "~0.6.2",
+    "harp": "~0.9.2"
+  },
+  "devDependencies": {
+    "docco": "~0.6.2",
+    "harp": "~0.9.2"
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/harp server ."
+  },
+  "author": "Brandon Tilley <brandon@brandontilley.com>",
+  "license": "MIT",
+  "private": true
+}
