@@ -23,6 +23,8 @@ class Calculator
   # and indicate that the new value is an answer so that it will
   # be automatically replaced with any new value the user types.
   eval: =>
+    return new Calculator() if @value == ''
+
     try
       val = "#{eval(@toString())}"
       new Calculator(val, true)
